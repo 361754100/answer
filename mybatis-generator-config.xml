@@ -16,7 +16,7 @@
 		<!-- jdbc连接 -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
 			connectionURL="jdbc:mysql://119.23.24.72:3306/db_sperms?useSSL=false" userId="sperms"
-			password="Sperms_123" />
+			password="Sperms_333" />
 
 		<javaModelGenerator targetPackage="com.test.answer.dao.model"
 			targetProject="src/main/java" />
