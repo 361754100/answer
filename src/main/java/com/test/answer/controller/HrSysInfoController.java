@@ -18,9 +18,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@Api(tags = "pointsinfo", description = "点位信息")
+@Api(tags = "hrsysinfo", description = "HR系统信息")
 @RestController
-@RequestMapping(value = "pointsinfo")
+@RequestMapping(value = "hrsysinfo")
 public class HrSysInfoController {
 
     private static Logger logger = LoggerFactory.getLogger(HrSysInfoController.class);

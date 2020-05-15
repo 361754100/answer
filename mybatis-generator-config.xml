@@ -29,12 +29,17 @@
 		<javaClientGenerator targetPackage="com.test.answer.dao.mapper"
 			targetProject="src/main/java" type="XMLMAPPER" />
 
-		<table tableName="points_info" domainObjectName="PointsInfo">
+		<table tableName="hr_user_info" domainObjectName="HrUserInfo">
+			<property name="useActualColumnNames" value="false"/>
+			<!--<generatedKey column="id" sqlStatement="JDBC" identity="true" />-->
+		</table>
+
+		<table tableName="hr_clock_history" domainObjectName="HrClockHistory">
 			<property name="useActualColumnNames" value="false"/>
 			<generatedKey column="id" sqlStatement="JDBC" identity="true" />
 		</table>
 
-		<table tableName="points_relation" domainObjectName="PointsRelation">
+		<table tableName="hr_clock_config" domainObjectName="HrClockConfig">
 			<property name="useActualColumnNames" value="false"/>
 			<generatedKey column="id" sqlStatement="JDBC" identity="true" />
 		</table>
