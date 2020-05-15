@@ -71,31 +71,4 @@ public class HrSysInfoController {
         return wrapper;
     }
 
-    @ApiOperation(value = "按ID查询")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="recordId", value = "记录ID", required = true, paramType = "form", dataType = "String")
-    })
-    @PostMapping(value = "/find_by_id")
-    public SingleQueryWrapper findRecordById(@RequestParam Integer recordId) {
-        SingleQueryWrapper wrapper = pointsInfoService.findRecordById(recordId);
-
-        logger.debug(" recordId = {}",
-                new Object[]{recordId});
-        return wrapper;
-    }
-
-    @ApiOperation(value = "获取所有数据")
-    @PostMapping(value = "/list_all")
-    public ListQueryWrapper listAll() {
-        ListQueryWrapper wrapper = pointsInfoService.listAll();
-        return wrapper;
-    }
-
-    @ApiOperation(value = "线路规划")
-    @PostMapping(value = "/line_plan")
-    public SingleQueryWrapper linePlan(@RequestBody LinesPlanParamsReq req) {
-        SingleQueryWrapper wrapper = pointsRelationService.linesPlan(req.getMaxTaskTime(), req.getDistanceRadius());
-        return wrapper;
-    }
-
 }
