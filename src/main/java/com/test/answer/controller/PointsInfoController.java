@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@Api(tags = "pointsinfo", description = "点位信息")
+@Api(tags = "pointsinfo", description = "点位路线规划")
 @RestController
 @RequestMapping(value = "pointsinfo")
 public class PointsInfoController {
@@ -31,13 +31,13 @@ public class PointsInfoController {
     @Autowired
     private PointsRelationService pointsRelationService;
 
-    @ApiOperation(value = "分页查询")
+    /*@ApiOperation(value = "分页查询")
     @ApiImplicitParams({
             @ApiImplicitParam(name="pageNo", value = "当前页", required = true, paramType = "form", dataType = "int"),
             @ApiImplicitParam(name="pageSize", value = "每页大小", required = true, paramType = "form", dataType = "int"),
             @ApiImplicitParam(name="proName", value = "名称关键字", paramType = "form", dataType = "string")
     })
-    @PostMapping(value = "/page_search")
+    @PostMapping(value = "/page_search")*/
     public PageSearchWrapper pageSearch(@RequestParam int pageNo, @RequestParam int pageSize,
                                         @RequestParam(required = false) String proName) {
         PageSearchWrapper wrapper = pointsInfoService.queryPage(pageNo, pageSize, proName);
@@ -47,35 +47,35 @@ public class PointsInfoController {
         return wrapper;
     }
 
-    @ApiOperation(value = "新增产品类型")
-    @PostMapping(value = "/add")
+    /*@ApiOperation(value = "新增点位信息")
+    @PostMapping(value = "/add")*/
     public CommonWrapper add(@RequestBody PointsInfoEditReq params) {
         logger.debug(" params = {}", new Object[]{params});
         CommonWrapper wrapper = pointsInfoService.addInfo(params);
         return wrapper;
     }
 
-    @ApiOperation(value = "修改产品类型")
-    @PostMapping(value = "/update")
+    /*@ApiOperation(value = "修改点位信息")
+    @PostMapping(value = "/update")*/
     public CommonWrapper update(@RequestBody PointsInfoEditReq params) {
         logger.debug(" params = {}", new Object[]{params});
         CommonWrapper wrapper = pointsInfoService.updateInfo(params);
         return wrapper;
     }
 
-    @ApiOperation(value = "删除产品类型")
-    @PostMapping(value = "/delete")
+    /*@ApiOperation(value = "删除点位信息")
+    @PostMapping(value = "/delete")*/
     public CommonWrapper delete(@RequestBody PointsInfoDelReq params) {
         logger.debug(" params = {}", new Object[]{params});
         CommonWrapper wrapper = pointsInfoService.deleteInfo(params.getRecordIds());
         return wrapper;
     }
 
-    @ApiOperation(value = "按ID查询")
+    /*@ApiOperation(value = "按ID查询")
     @ApiImplicitParams({
             @ApiImplicitParam(name="recordId", value = "记录ID", required = true, paramType = "form", dataType = "String")
     })
-    @PostMapping(value = "/find_by_id")
+    @PostMapping(value = "/find_by_id")*/
     public SingleQueryWrapper findRecordById(@RequestParam Integer recordId) {
         SingleQueryWrapper wrapper = pointsInfoService.findRecordById(recordId);
 
@@ -84,8 +84,8 @@ public class PointsInfoController {
         return wrapper;
     }
 
-    @ApiOperation(value = "获取所有数据")
-    @PostMapping(value = "/list_all")
+    /*@ApiOperation(value = "获取所有数据")
+    @PostMapping(value = "/list_all")*/
     public ListQueryWrapper listAll() {
         ListQueryWrapper wrapper = pointsInfoService.listAll();
         return wrapper;
