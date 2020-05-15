@@ -1,6 +1,7 @@
 package com.test.answer.response;
 
-import com.smart.sperms.enums.ResultCodeEnum;
+
+import com.test.answer.enums.ResultCodeEnum;
 
 import java.io.Serializable;
 

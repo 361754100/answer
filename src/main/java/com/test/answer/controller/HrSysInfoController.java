@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "pointsinfo", description = "点位信息")
 @RestController
 @RequestMapping(value = "pointsinfo")
-public class PointsInfoController {
+public class HrSysInfoController {
 
-    private static Logger logger = LoggerFactory.getLogger(PointsInfoController.class);
+    private static Logger logger = LoggerFactory.getLogger(HrSysInfoController.class);
 
     @Autowired
     private PointsInfoService pointsInfoService;

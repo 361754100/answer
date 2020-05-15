@@ -31,7 +31,7 @@ public class Swagger2Config {
                 .apiInfo(apiInfo())
                 .select()
                 //api文档扫描覆盖的包
-                .apis(RequestHandlerSelectors.basePackage("com.smart.sperms.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.test.answer.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }

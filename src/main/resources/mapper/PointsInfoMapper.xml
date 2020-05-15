@@ -99,18 +99,15 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.test.answer.dao.model.PointsInfo" >
-    insert into points_info (id, pname, ptype, 
-      lng, lat)
-    values (#{id,jdbcType=INTEGER}, #{pname,jdbcType=VARCHAR}, #{ptype,jdbcType=INTEGER}, 
-      #{lng,jdbcType=DOUBLE}, #{lat,jdbcType=DOUBLE})
+  <insert id="insert" parameterType="com.test.answer.dao.model.PointsInfo" useGeneratedKeys="true" keyProperty="id" >
+    insert into points_info (pname, ptype, lng, 
+      lat)
+    values (#{pname,jdbcType=VARCHAR}, #{ptype,jdbcType=INTEGER}, #{lng,jdbcType=DOUBLE}, 
+      #{lat,jdbcType=DOUBLE})
   </insert>
-  <insert id="insertSelective" parameterType="com.test.answer.dao.model.PointsInfo" >
+  <insert id="insertSelective" parameterType="com.test.answer.dao.model.PointsInfo" useGeneratedKeys="true" keyProperty="id" >
     insert into points_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
       <if test="pname != null" >
         pname,
       </if>
@@ -125,9 +122,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="pname != null" >
         #{pname,jdbcType=VARCHAR},
       </if>

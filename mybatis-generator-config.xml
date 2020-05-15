@@ -14,9 +14,13 @@
 		</commentGenerator>
 
 		<!-- jdbc连接 -->
+		<!--<jdbcConnection driverClass="com.mysql.jdbc.Driver"-->
+			<!--connectionURL="jdbc:mysql://119.23.24.72:3306/db_sperms?useSSL=false" userId="sperms"-->
+			<!--password="Sperms_333" />-->
+
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://119.23.24.72:3306/db_sperms?useSSL=false" userId="sperms"
-			password="Sperms_333" />
+						connectionURL="jdbc:mysql://localhost:3306/exam_db?useSSL=false" userId="root"
+						password="123456" />
 
 		<javaModelGenerator targetPackage="com.test.answer.dao.model"
 			targetProject="src/main/java" />
@@ -27,12 +31,12 @@
 
 		<table tableName="points_info" domainObjectName="PointsInfo">
 			<property name="useActualColumnNames" value="false"/>
-			<!--<generatedKey column="E_ID" sqlStatement="JDBC" identity="true" />-->
+			<generatedKey column="id" sqlStatement="JDBC" identity="true" />
 		</table>
 
 		<table tableName="points_relation" domainObjectName="PointsRelation">
 			<property name="useActualColumnNames" value="false"/>
-			<!--<generatedKey column="E_ID" sqlStatement="JDBC" identity="true" />-->
+			<generatedKey column="id" sqlStatement="JDBC" identity="true" />
 		</table>
 
 	</context>
