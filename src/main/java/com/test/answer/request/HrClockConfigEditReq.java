@@ -9,10 +9,10 @@ import java.util.Date;
 @ApiModel(description = "点位信息消息体")
 public class HrClockConfigEditReq implements Serializable {
 
-    @ApiModelProperty(value = "上班打卡时间")
+    @ApiModelProperty(value = "上班打卡时间", example = "09:05:00")
     private String clockInTime;
 
-    @ApiModelProperty(value = "下班打卡时间")
+    @ApiModelProperty(value = "下班打卡时间", example = "18:00:00")
     private String clockOutTime;
 
     public String getClockInTime() {

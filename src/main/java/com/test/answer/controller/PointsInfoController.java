@@ -10,17 +10,15 @@ import com.test.answer.response.SingleQueryWrapper;
 import com.test.answer.service.PointsInfoService;
 import com.test.answer.service.PointsRelationService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@Api(tags = "pointsinfo", description = "点位路线规划")
+@Api(tags = "points", description = "第一题：路线规划")
 @RestController
-@RequestMapping(value = "pointsinfo")
+@RequestMapping(value = "points")
 public class PointsInfoController {
 
     private static Logger logger = LoggerFactory.getLogger(PointsInfoController.class);

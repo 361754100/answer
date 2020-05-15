@@ -1,16 +1,22 @@
 package com.test.answer.dao;
 
+import com.test.answer.dao.dto.HrClockHistoryReportDto;
 import com.test.answer.dao.mapper.HrClockHistoryMapper;
 import com.test.answer.dao.model.HrClockHistory;
 import com.test.answer.dao.model.HrClockHistoryExample;
+import com.test.answer.utils.DateUtils;
 import com.test.answer.utils.RowBoundsUtil;
 import com.test.answer.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class HrClockHistoryDao {
@@ -33,6 +39,32 @@ public class HrClockHistoryDao {
             logger.error("save data error...", e);
         }
         return cnt;
+    }
+
+    /**
+     * 查询用户当天打卡记录
+     * @param userId
+     * @param date
+     * @return
+     */
+    public HrClockHistory queryUserHistory(String userId, Date date) {
+        HrClockHistory history = null;
+
+        String startTime = DateUtils.parseDateToStr(date, "yyyy-MM-dd") + " 00:00:00";
+        String endTime = DateUtils.parseDateToStr(date, "yyyy-MM-dd") + " 23:59:59";
+
+        Date startDate = DateUtils.parseStrToDate(startTime, "yyyy-MM-dd HH:mm:ss");
+        Date endDate = DateUtils.parseStrToDate(endTime, "yyyy-MM-dd HH:mm:ss");
+
+        HrClockHistoryExample example = new HrClockHistoryExample();
+        example.createCriteria().andUserIdEqualTo(userId)
+                .andClockInBetween(startDate, endDate);
+
+        List<HrClockHistory> result = mapper.selectByExample(example);
+        if(!CollectionUtils.isEmpty(result)) {
+            history = result.get(0);
+        }
+        return history;
     }
 
     /**
@@ -140,5 +172,17 @@ public class HrClockHistoryDao {
         List<HrClockHistory> result = mapper.selectByExample(example);
         return result;
     }
-    
+
+    /**
+     * 考勤统计
+     * @return
+     */
+    public List<HrClockHistoryReportDto> reportClockHistory(String startTime, String endTime) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("startTime", startTime);
+        params.put("endTime", endTime);
+
+        List<HrClockHistoryReportDto> result = mapper.reportClockHistory(params);
+        return result;
+    }
 }

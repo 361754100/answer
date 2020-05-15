@@ -216,4 +216,27 @@
       order by ${orderByClause}
     </if>
   </select>
+
+
+  <!--考勤记录统计结果-->
+  <resultMap id="HrClockHisReportMap" type="com.test.answer.dao.dto.HrClockHistoryReportDto" >
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="state_count" property="stateCount" jdbcType="INTEGER" />
+  </resultMap>
+
+  <!--考勤记录统计SQL-->
+  <select resultMap="HrClockHisReportMap" parameterType="java.util.Map" id="reportClockHistory" >
+    select hr_user_info.user_name, report_tb.*  from (
+      select user_id, state, count(*) as state_count from hr_clock_history
+      <where>
+        <if test="startTime != null and endTime != null" >
+          and clock_in <![CDATA[ >= ]]> #{startTime,jdbcType=VARCHAR} and clock_out <![CDATA[ <= ]]> #{endTime,jdbcType=VARCHAR}
+        </if>
+      </where>
+      group by user_id, state
+    ) report_tb left join hr_user_info on report_tb.user_id = hr_user_info.user_id
+  </select>
+
 </mapper>

@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -38,15 +39,13 @@ public class HrClockConfigDao {
 
     /**
      * 修改记录
-     * @param recordId
      * @param record
      * @return
      */
-    public int updateData(Integer recordId, HrClockConfig record) {
+    public int updateData(HrClockConfig record) {
         int cnt = 0;
         try {
             HrClockConfigExample example = new HrClockConfigExample();
-            example.createCriteria().andIdEqualTo(recordId);
 
             cnt = mapper.updateByExampleSelective(record, example);
         } catch (Exception e) {
@@ -126,4 +125,18 @@ public class HrClockConfigDao {
         return result;
     }
     
+    /**
+     * 获取考勤配置规则
+     * @return
+     */
+    public HrClockConfig getHrClockConfig() {
+        HrClockConfig config = null;
+        HrClockConfigExample example = new HrClockConfigExample();
+
+        List<HrClockConfig> result = mapper.selectByExample(example);
+        if(!CollectionUtils.isEmpty(result)) {
+            config = result.get(0);
+        }
+        return config;
+    }
 }

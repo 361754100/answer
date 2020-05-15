@@ -6,31 +6,17 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
 
-@ApiModel(description = "点位信息消息体")
+@ApiModel(description = "个人考勤记录消息体")
 public class HrClockHistoryEditReq implements Serializable {
 
-    @ApiModelProperty(value = "记录ID")
-    private Integer id;
-
-    @ApiModelProperty(value = "人员账号")
+    @ApiModelProperty(value = "人员账号", example = "XiaoMing")
     private String userId;
 
-    @ApiModelProperty(value = "上班打卡时间")
-    private Date clockIn;
+    @ApiModelProperty(value = "上班打卡时间", example = "2020-05-16 09:00:00")
+    private String clockIn;
 
-    @ApiModelProperty(value = "下班打卡时间")
-    private Date clockOut;
-
-    @ApiModelProperty(value = "当天状态")
-    private Integer state;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    @ApiModelProperty(value = "下班打卡时间", example = "2020-05-16 18:00:00")
+    private String clockOut;
 
     public String getUserId() {
         return userId;
@@ -40,38 +26,28 @@ public class HrClockHistoryEditReq implements Serializable {
         this.userId = userId;
     }
 
-    public Date getClockIn() {
+    public String getClockIn() {
         return clockIn;
     }
 
-    public void setClockIn(Date clockIn) {
+    public void setClockIn(String clockIn) {
         this.clockIn = clockIn;
     }
 
-    public Date getClockOut() {
+    public String getClockOut() {
         return clockOut;
     }
 
-    public void setClockOut(Date clockOut) {
+    public void setClockOut(String clockOut) {
         this.clockOut = clockOut;
-    }
-
-    public Integer getState() {
-        return state;
-    }
-
-    public void setState(Integer state) {
-        this.state = state;
     }
 
     @Override
     public String toString() {
         return "HrClockHistoryEditReq{" +
-                "id=" + id +
-                ", userId='" + userId + '\'' +
-                ", clockIn=" + clockIn +
-                ", clockOut=" + clockOut +
-                ", state=" + state +
+                "userId='" + userId + '\'' +
+                ", clockIn='" + clockIn + '\'' +
+                ", clockOut='" + clockOut + '\'' +
                 '}';
     }
 }

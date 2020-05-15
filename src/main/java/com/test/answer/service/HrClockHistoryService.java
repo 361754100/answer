@@ -1,43 +1,61 @@
 package com.test.answer.service;
 
+import com.test.answer.dao.HrClockConfigDao;
 import com.test.answer.dao.HrClockHistoryDao;
+import com.test.answer.dao.dto.HrClockHistoryReportDto;
+import com.test.answer.dao.model.HrClockConfig;
 import com.test.answer.dao.model.HrClockHistory;
+import com.test.answer.enums.HrClockHisStateEnum;
 import com.test.answer.enums.ResultCodeEnum;
 import com.test.answer.request.HrClockHistoryEditReq;
 import com.test.answer.response.CommonWrapper;
 import com.test.answer.response.ListQueryWrapper;
 import com.test.answer.response.PageSearchWrapper;
 import com.test.answer.response.SingleQueryWrapper;
+import com.test.answer.utils.DateUtils;
+import com.test.answer.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class HrClockHistoryService {
 
     @Autowired
+    private HrClockConfigDao hrClockConfigDao;
+
+    @Autowired
     private HrClockHistoryDao hrClockHistoryDao;
 
     /**
-     * 新增记录
+     * 保存考勤记录
      * @param req
      * @return
      */
-    public CommonWrapper addInfo(HrClockHistoryEditReq req) {
+    public CommonWrapper saveOrUpdateInfo(HrClockHistoryEditReq req) {
         CommonWrapper wrapper = new CommonWrapper();
         wrapper.setResultCode(ResultCodeEnum.FAILURE.getCode());
 
-        //TODO...添加的时候需要判断当天打卡记录是否已存在
-
         HrClockHistory info = new HrClockHistory();
-        info.setClockIn(req.getClockIn());
-        info.setClockOut(req.getClockOut());
+        info.setClockIn(DateUtils.parseStrToDate(req.getClockIn(), "yyyy-MM-dd HH:mm:ss"));
+        info.setClockOut(DateUtils.parseStrToDate(req.getClockOut(), "yyyy-MM-dd HH:mm:ss"));
         info.setUserId(req.getUserId());
-        info.setState(req.getState());
+        int state = this.getClockState(req.getClockIn(), req.getClockOut());
+        info.setState(state);
 
-        int cnt = hrClockHistoryDao.saveData(info);
+        // 添加的时候需要判断当天打卡记录是否已存在
+        HrClockHistory existHis = hrClockHistoryDao.queryUserHistory(info.getUserId(), info.getClockIn());
+
+        int cnt = 0;
+        if(existHis != null) {
+            cnt = hrClockHistoryDao.updateData(existHis.getId(), info);
+        } else {
+            cnt = hrClockHistoryDao.saveData(info);
+        }
+
         if(cnt > 0) {
             wrapper.setResultCode(ResultCodeEnum.SUCCESS.getCode());
             wrapper.setResultMsg(ResultCodeEnum.SUCCESS.getDesc());
@@ -46,26 +64,44 @@ public class HrClockHistoryService {
     }
 
     /**
-     * 修改记录
-     * @param req
+     * 获取考勤状态
+     * @param clockIn
+     * @param clockOut
      * @return
      */
-    public CommonWrapper updateInfo(HrClockHistoryEditReq req) {
-        CommonWrapper wrapper = new CommonWrapper();
-        wrapper.setResultCode(ResultCodeEnum.FAILURE.getCode());
+    public int getClockState(String clockIn, String clockOut) {
+        int state = HrClockHisStateEnum.NORMAL.getCode();
 
-        HrClockHistory info = new HrClockHistory();
-        info.setClockIn(req.getClockIn());
-        info.setClockOut(req.getClockOut());
-        info.setUserId(req.getUserId());
-        info.setState(req.getState());
-
-        int cnt = hrClockHistoryDao.updateData(req.getId(), info);
-        if(cnt > 0) {
-            wrapper.setResultCode(ResultCodeEnum.SUCCESS.getCode());
-            wrapper.setResultMsg(ResultCodeEnum.SUCCESS.getDesc());
+        HrClockConfig clockConfig = hrClockConfigDao.getHrClockConfig();
+        if(clockConfig == null) {
+            clockConfig = new HrClockConfig();
+            clockConfig.setClockInTime("09:00:00");
+            clockConfig.setClockOutTime("18:00:00");
         }
-        return wrapper;
+        String configClockIn = clockConfig.getClockInTime();
+        String configClockOut = clockConfig.getClockOutTime();
+
+        String clockInTime = clockIn.substring(11, 19);
+        String clockOutTime = "";
+        if(!StringUtils.isEmpty(clockOut)) {
+            clockOutTime = clockOut.substring(11, 19);
+        }
+        if(configClockIn.compareTo(clockInTime) >= 0) {
+
+            if(!StringUtils.isEmpty(clockOutTime)) {
+
+                if(configClockOut.compareTo(clockOutTime) > 0) {
+                    state = HrClockHisStateEnum.EARLY.getCode();
+                }
+                else if(configClockOut.compareTo(clockOutTime) < 0) {
+                    state = HrClockHisStateEnum.HARD.getCode();
+                }
+            }
+        }
+        else {
+            state = HrClockHisStateEnum.LATE.getCode();
+        }
+        return state;
     }
 
     /**
@@ -126,13 +162,13 @@ public class HrClockHistoryService {
     }
 
     /**
-     * 查询单个结果
+     * 统计考勤记录
      * @return
      */
-    public ListQueryWrapper listAll() {
+    public ListQueryWrapper reportClockHistory(String startTime, String endTime) {
         ListQueryWrapper wrapper = new ListQueryWrapper();
 
-        List<HrClockHistory> result = hrClockHistoryDao.listAll();
+        List<HrClockHistoryReportDto> result = hrClockHistoryDao.reportClockHistory(startTime, endTime);
         if(!CollectionUtils.isEmpty(result)) {
             wrapper.setRecords(result);
         }
